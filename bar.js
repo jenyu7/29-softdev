@@ -1,58 +1,45 @@
 // Team heySui
-// Shannon Lau and Jen Yu
+// Jen Yu, Shannon Lau and Shaina Peters
 // SoftDev2 pd7
-// K13 - Scattered
-// 2018-03-21
+// K14 - Bars
+// 2018-03-24
 
-/**
-   D3 demo: transition basics
-   Clyde "Thluffy" Sinclair
-   SoftDev2 pd0
-   2099-12-31
- **/
-
-//build horiz bar chart...
-var data = [[2017, 3.21, 3.65, -443, -2.6, 17],[2015, 2.96, 3.36, -399, -2.5, 16.2]];
+var data2017 = [["Revenue", 3.21], ["Spending", 3.65], ["Surplus/Deficit", -0.443], ["GDP", 17]];
+var data2015 = [["Revenue", 2.96], ["Spending", 3.36], ["Surplus/Deficit", -0.399], ["GDP", 16.2]];
 var chart = d3.selectAll(".chart");
+var title = document.getElementById("title");
+var toggle = document.getElementById("toggle");
+var y2015 = false;
 var bar = chart.selectAll("div");
-console.log(chart["_groups"][0]);
-var test = chart["_groups"][0].selectAll("div").data(data);
-console.log(test);
+var barUpdate = bar.data(data2015);
+var barEnter = barUpdate.enter().append("div");
+barEnter.text(function(d) {return d[0] + " - $" + d[1] + " trillion USD"; });
+barEnter.transition().duration(3000).style("width", function(d) {
+    if (d[1] > 10) return d[1] * 50 + "px";
+    if (d[1] < 1) return Math.abs(d[1]) * 200 + "px";
+    return d[1] * 100 + "px"; });
 
-var display = function(){
+var drawBars = function(e){
+    var data;
+    if (y2015){
+	data = data2015;
+	y2015 = false;
+	title.innerHTML = "Details on 2015 Federal Budget";
+    }
+    else{
+	data = data2017;
+	y2015 = true;
+	title.innerHTML = "Details on 2017 Federal Budget";
+    }
+    var bar = chart.selectAll("div");
     var barUpdate = bar.data(data);
-    var barEnter = barUpdate.enter().append("div");
-    //5s transition:
-    barEnter.transition().duration(5000).style("width", function(d) {
+    barUpdate.text(function(d) {return d[0] + " - $" + d[1] + " trillion USD"; });
+    barUpdate.transition().duration(3000).style("width", function(d) {
+	if (d[1] > 10) return d[1] * 50 + "px";
+	if (d[1] < 1) return Math.abs(d[1]) * 200 + "px";
 	return d[1] * 100 + "px"; });
-    barEnter.text(function(d) { return d[0]; });
-    // x-axis
-    labels.append("text")
-	.attr("x", function(d) { return 50 * d[0] - 5})
-	.attr("y", 400)
-	.text(function(d) { return d[0]; });
-    // y-axis
-    labels.append("text")
-	.attr("x", 5)
-	.attr("y", function(d){ return 450 - d[1] * 3; })
-	.text(function(d) { return d[1]; });
-    labels.append("text")
-	.attr("x", 190)
-	.attr("y", 440)
-	.text("Quantity of Salsa");
-    labels.append("text")
-	.attr("x", 10)
-	.attr("y", 30)
-	.text("Average Total Cost ($)");
-};
+}
 
-var plot = function(){
-    var circles = d3.select("svg").selectAll("circle").data(data).enter();
-    circles.append("circle")
-	.attr("cx", function(d){ return 50 * d[0]; })
-	.attr("cy", function(d){ return 450 - d[1] * 3; })
-	.attr("r", 10)
-	.attr("fill", "red")
-    svg.append(circles);
-};
+drawBars();
 
+toggle.addEventListener("click", drawBars);
