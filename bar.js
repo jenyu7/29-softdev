@@ -1,8 +1,8 @@
 // Team heySui
 // Jen Yu, Shannon Lau and Shaina Peters
 // SoftDev2 pd7
-// K14 - Bars
-// 2018-03-24
+// K #14: You Are Smarter Than the President*
+// 2018-03-25
 
 var data2017 = [["Revenue", 3.21], ["Spending", 3.65], ["Surplus/Deficit", -0.443], ["GDP", 17]];
 var data2015 = [["Revenue", 2.96], ["Spending", 3.36], ["Surplus/Deficit", -0.399], ["GDP", 16.2]];
